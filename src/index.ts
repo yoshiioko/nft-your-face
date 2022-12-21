@@ -14,7 +14,7 @@ const tokenName = "Token Name";
 const description = "Description";
 const symbol = "SYMBOL";
 const sellerFeeBasisPoints = 100;
-const imageFile = "test.png";
+const imageFile = "adrian_1.png";
 
 async function main() {
   const connection = new web3.Connection(web3.clusterApiUrl("devnet"));
@@ -32,6 +32,12 @@ async function main() {
         timeout: 60000,
       })
     );
+
+  // 2. Upload image to Metaplex
+  const buffer = fs.readFileSync("src/" + imageFile);
+  const file = toMetaplexFile(buffer, imageFile);
+  const imageUri = await metaplex.storage().upload(file);
+  console.log("image uri:", imageUri);
 }
 
 main()
