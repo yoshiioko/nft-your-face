@@ -34,6 +34,26 @@ async function createNft(
   return nft;
 }
 
+async function updateNft(
+  metaplex: Metaplex,
+  uri: string,
+  mintAddress: PublicKey
+) {
+  const nft = await metaplex.nfts().findByMint({ mintAddress });
+
+  await metaplex.nfts().update({
+    nftOrSft: nft,
+    name: tokenName,
+    symbol: symbol,
+    uri: uri,
+    sellerFeeBasisPoints: sellerFeeBasisPoints,
+  });
+
+  console.log(
+    `Token Mint: https://explorer.solana.com/address/${nft.address.toString()}?cluster=devnet`
+  );
+}
+
 async function main() {
   const connection = new web3.Connection(web3.clusterApiUrl("devnet"));
   const user = await initializeKeypair(connection);
@@ -67,6 +87,12 @@ async function main() {
 
   // 4. Call function to create NFT
   await createNft(metaplex, uri);
+
+  // 5. Optional if you want to update the NFT
+  // const mintAddress = new PublicKey(
+  //   "CCSXLW5e6vW5kfA14GqFvXp6pcB8NjhJuu4RUjPremBv"
+  // );
+  // await updateNft(metaplex, uri, mintAddress);
 }
 
 main()
