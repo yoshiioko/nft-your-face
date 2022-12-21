@@ -10,9 +10,9 @@ import {
 } from "@metaplex-foundation/js";
 import * as fs from "fs";
 
-const tokenName = "Token Name";
-const description = "Description";
-const symbol = "SYMBOL";
+const tokenName = "Yoshiioko";
+const description = "A picture of a sexy man";
+const symbol = "YOSH";
 const sellerFeeBasisPoints = 100;
 const imageFile = "adrian_1.png";
 
@@ -38,6 +38,14 @@ async function main() {
   const file = toMetaplexFile(buffer, imageFile);
   const imageUri = await metaplex.storage().upload(file);
   console.log("image uri:", imageUri);
+
+  // 3. Upload the metadata using the image URI to get metadata URI
+  const { uri } = await metaplex.nfts().uploadMetadata({
+    name: tokenName,
+    description: description,
+    image: imageUri,
+  });
+  console.log("metadata uri:", uri);
 }
 
 main()
