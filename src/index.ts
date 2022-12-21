@@ -16,6 +16,24 @@ const symbol = "YOSH";
 const sellerFeeBasisPoints = 100;
 const imageFile = "adrian_1.png";
 
+async function createNft(
+  metaplex: Metaplex,
+  uri: string
+): Promise<NftWithToken> {
+  const { nft } = await metaplex.nfts().create({
+    uri: uri,
+    name: tokenName,
+    sellerFeeBasisPoints: sellerFeeBasisPoints,
+    symbol: symbol,
+  });
+
+  console.log(
+    `Token Mint: https://explorer.solana.com/address/${nft.address.toString()}?cluster=devnet`
+  );
+
+  return nft;
+}
+
 async function main() {
   const connection = new web3.Connection(web3.clusterApiUrl("devnet"));
   const user = await initializeKeypair(connection);
