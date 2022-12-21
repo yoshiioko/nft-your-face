@@ -57,13 +57,16 @@ async function main() {
   const imageUri = await metaplex.storage().upload(file);
   console.log("image uri:", imageUri);
 
-  // 3. Upload the metadata using the image URI to get metadata URI
+  // 3. Upload the metadata using the image URI to get metadata URI (off chain metadata)
   const { uri } = await metaplex.nfts().uploadMetadata({
     name: tokenName,
     description: description,
     image: imageUri,
   });
   console.log("metadata uri:", uri);
+
+  // 4. Call function to create NFT
+  await createNft(metaplex, uri);
 }
 
 main()
